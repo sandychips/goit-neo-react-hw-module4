@@ -1,0 +1,14 @@
+.loadMore {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .loadMore:hover {
+    background: #218838;
+  }
+  
