@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Loader from './components/Loader/Loader';
@@ -15,7 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [noResults, setNoResults] = useState(false); // Додаємо стан для обробки відсутніх результатів
+  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     if (!query) return;
@@ -28,7 +29,7 @@ export default function App() {
       try {
         const data = await fetchImages(query, page);
         if (data.results.length === 0) {
-          setNoResults(true); // Якщо немає результатів, оновлюємо стан
+          setNoResults(true);
         } else {
           setImages(prev => [...prev, ...data.results]);
         }
@@ -44,13 +45,16 @@ export default function App() {
 
   return (
     <div className={styles.container}>
+      <Toaster position="top-right" reverseOrder={false} />
       <SearchBar onSubmit={setQuery} />
       {error && <ErrorMessage message={error} />}
       {noResults && <ErrorMessage message="Нічого не знайдено. Спробуйте інший запит." />}
       <ImageGallery images={images} onSelect={setSelectedImage} />
       {isLoading && <Loader />}
       {images.length > 0 && !isLoading && <LoadMoreBtn onClick={() => setPage(page + 1)} />}
-      {selectedImage && <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />}
+      {selectedImage && (
+        <ImageModal image={selectedImage} onClose={() => setSelectedImage(null)} />
+      )}
     </div>
   );
 }
